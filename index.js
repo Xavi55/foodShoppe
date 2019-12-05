@@ -13,8 +13,8 @@ const app = express()
 //Settings
 const PORT = process.env.PORT || 5000
 
-//Data
-//
+//DB
+const db = require('./model/dbAccess')
 
 //Middleware
 app.use(morgan('dev'))
@@ -32,19 +32,26 @@ app.get('/', async (req,res)=>
 app.get('/ingredients/load/:name', async (req,res)=>
 {
     const { name } = req.params
-    res.json({'mess':'load ingredients','n':name})
+    getName(name)
+    .then(rows=>
+    {
+        res.json({'data':rows,'code':1})
+    })
 })
 app.post('/ingredients/put', async (req,res)=>
 {
     res.json({'mess':req.body})
 })
-app.get('/recipes/search/:food/:calories?', (req,res)=>
+
+//accepts only food and calories queries
+app.get('/recipes/search/', (req,res)=>
 {
-    let { food, calories }=req.params
+    let { food, calories }=req.query
     if(!calories)
     {
         calories='0-9999'
     }
+
     //EDAMAM API
     https.get(`https://api.edamam.com/search?q=${food}&calories=${calories}&app_id=${APIID}&app_key=${APIKEY}&from=0&to=2`,(resp)=>
     {
