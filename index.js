@@ -25,6 +25,10 @@ app.use(express.static(path.join(__dirname,'view/build')))
 ///
 //Routes
 //
+app.get('/', async (req,res)=>
+{
+    res.json({'mess':'welcome'})
+})
 app.get('/ingredients/load/:name', async (req,res)=>
 {
     const { name } = req.params
@@ -34,23 +38,15 @@ app.post('/ingredients/put', async (req,res)=>
 {
     res.json({'mess':req.body})
 })
-app.get('/recipes/search/:foods', (req,res)=>
+app.get('/recipes/search/:food/:calories?', (req,res)=>
 {
-    //EDAMAM API
-    let { food }=req.params
-
-   /*  var options = {
-        "method": "GET",
-        "hostname": "api.edamam.com",
-        "port": null,
-        "path": "/search?q=beef&app_id=fb89c3a4&app_key=b2223fceb36e6602700bcac8d8effa53&from=0&to=10",
-        "headers": {
-          "cache-control": "no-cache",
-          "postman-token": "07f002a7-af68-b0ca-323d-c8a2a22fff98"
-        }
+    let { food, calories }=req.params
+    if(!calories)
+    {
+        calories='0-9999'
     }
- */
-    https.get(`https://api.edamam.com/search?q=${food}&app_id=${APIID}&app_key=${APIKEY}&from=0&to=10`,(resp)=>
+    //EDAMAM API
+    https.get(`https://api.edamam.com/search?q=${food}&calories=${calories}&app_id=${APIID}&app_key=${APIKEY}&from=0&to=2`,(resp)=>
     {
         let data=''
         resp.on('data',(chunk)=>
@@ -59,19 +55,40 @@ app.get('/recipes/search/:foods', (req,res)=>
         });
         resp.on('end',()=>
         {
-            let recipes =[]
-            JSON.parse(data).hits.map((i)=>
+            var recipes =[]
+            try
             {
-                recipes.push(
+                JSON.parse(data).hits.map((i)=>
+                {
+                    recipes.push(
                     {
                         'label':i.recipe.label,
                         'url':i.recipe.url,
+                        'img':i.recipe.image,
                         'ingredients':i.recipe.ingredients,
                         'calories':i.recipe.calories,
                         'servings':i.recipe.yield
                     })
-            })
-            res.json({'data':recipes})
+                })
+            }
+            catch(e)
+            {
+                console.log('***No recipes found or API limit error ?***\n',e)
+            }
+            if(recipes.length!=0)
+            {
+                res.json({'data':recipes,'code':1})
+            }
+            else
+            {
+                res.json({'data':[],'code':0,'mess':'Error'})
+            }
+        })
+
+        resp.on('error',(e)=>
+        {
+            console.log(`Error ${e}`)
+            res.json({'mess':'error','code':0})
         })
     })
 })
