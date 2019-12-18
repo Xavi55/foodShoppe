@@ -74,7 +74,8 @@ app.get('/recipes/search/', (req,res)=>
                         'img':i.recipe.image,
                         'ingredients':i.recipe.ingredients,
                         'calories':i.recipe.calories,
-                        'servings':i.recipe.yield
+                        'servings':i.recipe.yield,
+                        'difficulty':i.recipe.ingredients.length/10.0
                     })
                 })
             }
