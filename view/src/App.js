@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
 import BottomBar from './BottomBar'
-
-//Bottom contentimport Bottom from './Bottom'
+import { useState } from 'react'
 
 function App() {
-  return (
+    const [ ingredients, setIngredients ]=useState('')
+
+    const handleIngredients=(s)=>
+    {
+        console.log('app', s)
+    }
+
+    return (
     <div className="App">
-      demo
-      <BottomBar />
-      
-      {//<Bottom />}
-      }
+        <BottomBar getIngredients={setIngredients}/>
+        {console.log(ingredients)}
     </div>
   );
 }
