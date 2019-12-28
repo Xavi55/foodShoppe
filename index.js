@@ -35,7 +35,14 @@ app.get('/ingredients/load/:name', async (req,res)=>
     getName(name)
     .then(rows=>
     {
-        res.json({'data':rows,'code':1})
+        if(rows.length)
+        {
+            res.json({'data':rows,'code':1})
+        }
+        else
+        {
+            res.json({'code':0})
+        }
     })
 })
 app.post('/ingredients/put', async (req,res)=>
