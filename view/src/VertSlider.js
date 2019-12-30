@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Typography, Slider } from '@material-ui/core';
-import { getThemeProps } from '@material-ui/styles';
 const marks = [
   {
     value: 0,
