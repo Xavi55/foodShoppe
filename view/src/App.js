@@ -3,6 +3,7 @@ import BottomBar from './BottomBar'
 import { useState, useEffect } from 'react'
 
 import './index.css'
+import { string } from 'prop-types';
 
 function App() {
     const [ recipes, setRecipes ]=useState([])
@@ -13,10 +14,23 @@ function App() {
         //.then(data=>data.json())
     },[recipes]) */
 
+    const [ loading, setLoading ]=useState(false)
+    //
+    
     const [ ingredients, setIngredients ]=useState('')
-    const handleIngredients=(s)=>
+    const handleIngredients=(options)=>
     {
-        fetch(`/recipes/search/?food=${s}`)
+        let calories = options[1]
+        if(calories==100)
+        {
+            calories=''
+        }
+        else
+        {
+            calories='0-'+String(calories)
+        }
+        console.log(options[1],calories)
+        fetch(`/recipes/search/?food=${options[0]}&calories=${calories}`)
         .then(data=>data.json())
         .then(data=>
         {
@@ -24,6 +38,14 @@ function App() {
             {
                 //console.log(data.data)
                 setRecipes(data.data)
+            }
+            else
+            {
+                console.log(data)
+                /*setRecipes([{
+                    label:'Unable to find recipes'
+                }])
+                */
             }
         })
     }
@@ -34,7 +56,7 @@ function App() {
             ?
             recipes.map(i=>
             {
-                return(<h1>{i.label}</h1>)
+            return(<h1>{i.label}<br/>{i.calories}</h1>)
             })
             :
             <p>empty {recipes[0]}</p>

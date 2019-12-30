@@ -6,6 +6,7 @@ import {
     TextField
 } from '@material-ui/core'
 import {useState} from 'react'
+import VertSlider from './VertSlider'
 import './BottomBar.css'
 //import Settings from './Settings'
 
@@ -47,10 +48,12 @@ function BottomBar(props)
         setDrawer(!drawerState);
       };
 
-    const [ itext, setText ]=useState('')
+    const [ calories, setCalories ]=useState(100)//for the slider
+    const [ itext, setText ]=useState('')//for the textarea/ingredients
     const handleChange=(e)=>
     {
         const { name, value } = e.target
+        //console.log(e.value)
         setText(value)
     }
 
@@ -58,7 +61,7 @@ function BottomBar(props)
     {
         if(itext)
         {
-            props.getIngredients(itext)//send to parent
+            props.getIngredients([itext,calories])//send to parent
         }
         setText('')
         setDrawer(false)
@@ -79,7 +82,8 @@ function BottomBar(props)
                     name='itext'
                     autoFocus
                 />
-                <p style={{textAlign:'center'}}>...</p>
+
+                <VertSlider currCalories={calories} setCalories={setCalories}/>
                 <Button className='load' onClick={handleSubmit}>
                     Load
                 </Button>

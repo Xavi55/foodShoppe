@@ -9,6 +9,7 @@
     height:6em;
     display:grid;
     grid-template-columns:2fr 1fr 1fr;
+    column-gap: 1.2em;
     margin: 1em .4em;
 }
 .load:hover
