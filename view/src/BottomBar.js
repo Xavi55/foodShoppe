@@ -67,8 +67,7 @@ function BottomBar(props)
         setDrawer(false)
     }
     return(
-        <div>
-            <AppBar style={Style}>
+        <AppBar style={Style}>
             <Button className='btn' onClick={toggleDrawer(true)}>Settings</Button>
             <Drawer anchor="bottom" open={drawerState} onClose={toggleDrawer(false)}>
                 <div className='layout'>
@@ -90,8 +89,7 @@ function BottomBar(props)
                 </div>
 
             </Drawer>
-            </AppBar >
-        </div>
+        </AppBar >
     )
 }
 export default BottomBar

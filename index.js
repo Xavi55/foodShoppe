@@ -60,7 +60,7 @@ app.get('/recipes/search/', (req,res)=>
     }
 
     //EDAMAM API
-    https.get(`https://api.edamam.com/search?q=${food}&calories=${calories}&app_id=${APIID}&app_key=${APIKEY}&from=0&to=2`,(resp)=>
+    https.get(`https://api.edamam.com/search?q=${food}&calories=${calories}&app_id=${APIID}&app_key=${APIKEY}&from=0&to=10`,(resp)=>
     {
         let data=''
         resp.on('data',(chunk)=>

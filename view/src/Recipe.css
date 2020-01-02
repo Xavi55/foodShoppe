@@ -3,6 +3,7 @@
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
+  margin: 0 .2em;
 }
 #card
 {
@@ -17,5 +18,29 @@
 #card-image
 {
     height: 0;
-    padding-top: 20%;
+    padding-top: 60%;
+}
+.cardHead
+{
+    position: relative;
+    display: inline-block;
+}
+.cardHead .cardTip
+{
+    display:none;
+    width: auto;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /*Positioning */
+    position: absolute;
+    z-index: 1;
+    top:0
+}
+.cardHead:hover .cardTip
+{
+    display: block;
 }
